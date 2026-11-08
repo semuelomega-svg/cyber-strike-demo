@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyber Strike Demo</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#08090d;color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ text-align:center;padding:22px 10px;
+ background:#11131b;border-bottom:1px solid #ff3030;
+}
+.logo{
+ font-size:26px;font-weight:900;letter-spacing:3px;
+ color:#ff3434;text-shadow:0 0 15px red;
+}
+.subtitle{font-size:10px;color:#999;letter-spacing:3px;margin-top:8px}
+.online{font-size:11px;color:#49e58b;margin-top:12px}
+.container{width:92%;max-width:470px;margin:20px auto 90px}
+.panel{
+ background:linear-gradient(145deg,#191b26,#0e0f15);
+ border:1px solid #51252b;border-radius:15px;
+ padding:18px;margin-bottom:15px;
+ box-shadow:0 0 15px #ff202018;
+}
+h3{color:#ff4545;font-size:13px;letter-spacing:2px}
+.tabs{display:flex;gap:6px;margin-bottom:15px}
+.tab{
+ flex:1;padding:12px 3px;background:#22232c;
+ border:1px solid #444;color:#aaa;border-radius:7px;
+ font-size:11px;
+}
+.tab.active{background:#a91622;color:white;border-color:red}
+.page{display:none}
+.page.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.field{margin:15px 0}
+label{display:block;font-size:12px;color:#aaa;margin-bottom:7px}
+input{
+ width:100%;padding:13px;background:#08090e;
+ border:1px solid #555;color:white;border-radius:8px;
+}
+button{cursor:pointer}
+.main-btn{
+ width:100%;padding:14px;margin-top:10px;
+ background:linear-gradient(90deg,#99121e,#f22c3a);
+ border:0;border-radius:8px;color:white;font-weight:bold;
+}
+.small-btn{
+ padding:10px 16px;background:#292a35;
+ border:1px solid #b52b36;color:white;border-radius:7px;
+}
+.gold{
+ font-size:43px;text-align:center;color:#ffd45b;
+ font-weight:bold;text-shadow:0 0 15px #d89b00;
+ margin:18px 0;
+}
+.center{text-align:center}
+.muted{font-size:12px;color:#999}
+.skin{
+ background:#22232e;border:1px solid #48404a;
+ padding:14px;border-radius:12px;margin:12px 0;
+ text-align:center;
+}
+.weapon{
+ height:110px;display:flex;align-items:center;
+ justify-content:center;border-radius:9px;
+ background:radial-gradient(ellipse,#671c2b,#101117);
+ font-size:55px;margin-bottom:12px;
+}
+.skin h4{color:#ff5555}
+.skin p{font-size:12px;color:#aaa}
+.feature{
+ display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid #333;padding:14px 0;font-size:13px;
+}
+.switch{
+ width:45px;height:24px;border:0;border-radius:20px;
+ background:#444;position:relative;
+}
+.switch:after{
+ content:"";position:absolute;left:3px;top:3px;
+ height:18px;width:18px;border-radius:50%;background:white;
+ transition:.2s;
+}
+.switch.on{background:#e52232}
+.switch.on:after{left:24px}
+.notice{
+ padding:12px;background:#282014;color:#e8c77c;
+ border:1px solid #80602c;border-radius:8px;
+ font-size:11px;line-height:1.6;margin-top:14px;
+}
+#message{color:#50e58a;text-align:center;font-size:12px;margin:15px}
+.hidden{display:none!important}
+footer{text-align:center;color:#666;font-size:10px;padding:20px}
+.floating{
+ position:fixed;right:20px;bottom:20px;z-index:100;
+ background:#e21d2c;color:white;border:1px solid #ff7777;
+ padding:15px 21px;border-radius:30px;
+ box-shadow:0 0 18px red;font-weight:bold;
+ touch-action:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">BLOOD STRIKE</div>
+ <div class="subtitle">CYBER DEMO CONTROL CENTER</div>
+ <div class="online">● DEMONSTRATION MODE ONLINE</div>
+</header>
+
+<main class="container" id="mainMenu">
+
+ <div class="tabs">
+  <button class="tab active" onclick="showPage('home',this)">HOME</button>
+  <button class="tab" onclick="showPage('goldPage',this)">GOLD</button>
+  <button class="tab" onclick="showPage('skins',this)">SKINS</button>
+  <button class="tab" onclick="showPage('settings',this)">SETTINGS</button>
+ </div>
+
+ <section class="page active" id="home">
+
+  <div class="panel">
+   <h3>PLAYER PROFILE</h3>
+
+   <div class="field">
+    <label>DEMO USERNAME</label>
+    <input id="username" placeholder="Enter username">
+   </div>
+
+   <div class="field">
+    <label>DEMO PLAYER ID</label>
+    <input id="playerID" placeholder="Enter player ID">
+   </div>
+
+   <button class="main-btn" onclick="saveProfile()">SAVE PROFILE</button>
+   <p id="profileMessage" class="muted"></p>
+
+   <div class="notice">These are demonstration fields. Never enter your real game password.</div>
+  </div>
+
+  <div class="panel center">
+   <h3>GOLD BALANCE</h3>
+   <div class="muted">SIMULATED GOLD</div>
+   <div class="gold" id="homeGold">0</div>
+   <button class="main-btn" onclick="addGold()">+100 DEMO GOLD</button>
+  </div>
+
+ </section>
+
+ <section class="page" id="goldPage">
+  <div class="panel center">
+   <h3>GOLD GENERATOR</h3>
+   <div class="muted">YOUR DEMO BALANCE</div>
+   <div class="gold" id="goldBalance">0</div>
+   <button class="main-btn" onclick="addGold()">GENERATE +100</button>
+   <button class="small-btn" style="width:100%;margin-top:12px" onclick="resetGold()">RESET BALANCE</button>
+   <div class="notice">Fictional Gold counter. Not connected to Blood Strike.</div>
+  </div>
+ </section>
+
+ <section class="page" id="skins">
+  <div class="panel">
+   <h3>WEAPON SKIN COLLECTION</h3>
+
+   <div class="skin">
+    <div class="weapon">🔫</div>
+    <h4>INFERNO PHANTOM</h4>
+    <p>Fictional red cyber weapon</p>
+    <button class="small-btn" onclick="selectSkin('INFERNO PHANTOM')">PREVIEW</button>
+   </div>
+
+   <div class="skin">
+    <div class="weapon" style="background:radial-gradient(ellipse,#655016,#101117)">🔫</div>
+    <h4>GOLDEN REAPER</h4>
+    <p>Fictional premium gold weapon</p>
+    <button class="small-btn" onclick="selectSkin('GOLDEN REAPER')">PREVIEW</button>
+   </div>
+
+   <p id="skinMessage" class="center muted">No skin selected.</p>
+  </div>
+ </section>
+
+ <section class="page" id="settings">
+  <div class="panel">
+   <h3>DEMO SETTINGS</h3>
+
+   <div class="feature">
+    Glow effects
+    <button class="switch on" onclick="switchFeature(this)"></button>
+   </div>
+
+   <div class="feature">
+    Notifications
+    <button class="switch on" onclick="switchFeature(this)"></button>
+   </div>
+
+   <div class="feature">
+    Demo mode
+    <button class="switch" onclick="switchFeature(this)"></button>
+   </div>
+
+   <div class="notice">Settings only change the demonstration interface.</div>
+  </div>
+ </section>
+
+ <div id="message">SYSTEM READY</div>
+</main>
+
+<footer>
+ FAN-MADE VISUAL DEMO<br>
+ NOT CONNECTED TO THE OFFICIAL GAME
+</footer>
+
+<button class="floating" id="floatButton" onclick="toggleMenu()">☰ MENU</button>
+
+<script>
+let gold = 0;
+
+function showPage(id,button){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+ button.classList.add('active');
+}
+
+function updateGold(){
+ document.getElementById('homeGold').innerText=gold;
+ document.getElementById('goldBalance').innerText=gold;
+}
+
+function addGold(){
+ gold+=100;
+ updateGold();
+ document.getElementById('message').innerText='+100 DEMO GOLD ADDED!';
+}
+
+function resetGold(){
+ gold=0;
+ updateGold();
+ document.getElementById('message').innerText='BALANCE RESET';
+}
+
+function saveProfile(){
+ let name=document.getElementById('username').value.trim();
+ let id=document.getElementById('playerID').value.trim();
+
+ if(!name||!id){
+  document.getElementById('profileMessage').innerText='Fill both demo fields.';
+  return;
+ }
+
+ document.getElementById('profileMessage').innerText='Saved demo profile: '+name+' | '+id;
+}
+
+function selectSkin(name){
+ document.getElementById('skinMessage').innerText='Selected preview: '+name;
+}
+
+function switchFeature(button){
+ button.classList.toggle('on');
+}
+
+function toggleMenu(){
+ document.getElementById('mainMenu').classList.toggle('hidden');
+}
+
+// Draggable floating button
+const floatButton=document.getElementById('floatButton');
+let dragging=false,moved=false,startX=0,startY=0,initialX=0,initialY=0;
+
+floatButton.addEventListener('pointerdown',function(e){
+ dragging=true;
+ moved=false;
+ startX=e.clientX;
+ startY=e.clientY;
+ let rect=floatButton.getBoundingClientRect();
+ initialX=rect.left;
+ initialY=rect.top;
+ floatButton.setPointerCapture(e.pointerId);
+});
+
+floatButton.addEventListener('pointermove',function(e){
+ if(!dragging)return;
+ let dx=e.clientX-startX;
+ let dy=e.clientY-startY;
+ if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
+
+ if(moved){
+  let x=Math.max(0,Math.min(innerWidth-floatButton.offsetWidth,initialX+dx));
+  let y=Math.max(0,Math.min(innerHeight-floatButton.offsetHeight,initialY+dy));
+  floatButton.style.left=x+'px';
+  floatButton.style.top=y+'px';
+  floatButton.style.right='auto';
+  floatButton.style.bottom='auto';
+ }
+});
+
+floatButton.addEventListener('pointerup',function(){
+ dragging=false;
+});
+
+floatButton.addEventListener('pointercancel',function(){
+ dragging=false;
+});
+</script>
+
+</body>
+</html>
